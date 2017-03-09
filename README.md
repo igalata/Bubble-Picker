@@ -105,6 +105,7 @@ titles.forEachIndexed { i, country ->
 }
 ```
 
+Java
 ```java
 final String[] titles = getResources().getStringArray(R.array.countries);
 final TypedArray colors = getResources().obtainTypedArray(R.array.colors);
