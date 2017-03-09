@@ -7,6 +7,10 @@
 
 [Live DEMO on appetize.io](https://appetize.io/app/eem5172h1pvn1wzxf8uq35xqbg?device=nexus5&scale=75&orientation=portrait&osVersion=7.0)
 
+Check this [project on dribbble](https://dribbble.com/shots/3349372-Bubble-Picker-Open-Source-Component)
+
+Read how we did it [on Medium](https://medium.com/@igalata13/how-to-create-a-bubble-selection-animation-on-android-627044da4854#.ajonc010b)
+
 <img src="shot.gif"/>
 
 ##Requirements
