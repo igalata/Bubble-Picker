@@ -9,7 +9,7 @@ import org.jbox2d.dynamics.*
 /**
  * Created by irinagalata on 1/26/17.
  */
-class CircleBody(world: World, var position: Vec2, var radius: Float, var increasedRadius: Float) {
+class CircleBody(val world: World, var position: Vec2, var radius: Float, var increasedRadius: Float) {
 
     val decreasedRadius: Float = radius
 
@@ -27,7 +27,7 @@ class CircleBody(world: World, var position: Vec2, var radius: Float, var increa
     val isBusy: Boolean
         get() = isIncreasing || isDecreasing
 
-    var physicalBody: Body
+    lateinit var physicalBody: Body
 
     var increased = false
 
@@ -57,6 +57,15 @@ class CircleBody(world: World, var position: Vec2, var radius: Float, var increa
         else Constant.DENSITY.SMALL
 
     init {
+        while (true) {
+            if (world.isLocked.not()) {
+                initializeBody()
+                break
+            }
+        }
+    }
+
+    private fun initializeBody() {
         physicalBody = world.createBody(bodyDef).apply {
             createFixture(fixture)
             linearDamping = damping
