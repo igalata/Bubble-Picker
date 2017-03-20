@@ -11,10 +11,10 @@ Read how we did it [on Medium](https://medium.com/@igalata13/how-to-create-a-bub
 
 <img src="shot.gif"/>
 
-##Requirements
+## Requirements
 - Android SDK 16+
 
-##Usage
+## Usage
 
 Add to your root build.gradle:
 ```Groovy
