@@ -5,18 +5,16 @@
 
 <a href='https://play.google.com/store/apps/details?id=com.igalata.bubblepickerdemo&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="70" width="180"/></a>
 
-[Live DEMO on appetize.io](https://appetize.io/app/eem5172h1pvn1wzxf8uq35xqbg?device=nexus5&scale=75&orientation=portrait&osVersion=7.0)
-
 Check this [project on dribbble](https://dribbble.com/shots/3349372-Bubble-Picker-Open-Source-Component)
 
 Read how we did it [on Medium](https://medium.com/@igalata13/how-to-create-a-bubble-selection-animation-on-android-627044da4854#.ajonc010b)
 
 <img src="shot.gif"/>
 
-##Requirements
+## Requirements
 - Android SDK 16+
 
-##Usage
+## Usage
 
 Add to your root build.gradle:
 ```Groovy
@@ -31,7 +29,7 @@ allprojects {
 Add the dependency:
 ```Groovy
 dependencies {
-	compile 'com.github.igalata:Bubble-Picker:v0.1.1'
+	compile 'com.github.igalata:Bubble-Picker:v0.1.2'
 }
 ```
 
