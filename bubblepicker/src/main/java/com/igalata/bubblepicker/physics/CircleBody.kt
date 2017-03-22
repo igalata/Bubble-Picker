@@ -97,7 +97,7 @@ class CircleBody(val world: World, var position: Vec2, var radius: Float, var in
     }
 
     private fun reset() {
-        physicalBody.fixtureList.shape.m_radius = radius + margin
+        physicalBody.fixtureList?.shape?.m_radius = radius + margin
     }
 
     fun defineState() {
