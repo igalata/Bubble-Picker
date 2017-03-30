@@ -29,7 +29,7 @@ allprojects {
 Add the dependency:
 ```Groovy
 dependencies {
-	compile 'com.github.igalata:Bubble-Picker:v0.1.3'
+	compile 'com.github.igalata:Bubble-Picker:v0.2'
 }
 ```
 
@@ -151,6 +151,15 @@ picker.setListener(new BubblePickerListener() {
 To get all selected items use `picker.selectedItems` variable in Kotlin or `picker.getSelectedItems()` method in Java.
 
 For more usage examples please review the sample app
+
+## Changelog
+
+### Version: 0.2
+
+* `icon` parameter added to place an image on a bubble along with the title 
+* `iconOnTop` parameter added to control position of the icon on a bubble
+* `textSize` parameter added
+* `BubblePicker.bubbleSize` variable now can be changed from 1 to 100
 
 ## License
 
