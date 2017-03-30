@@ -1,7 +1,5 @@
 package com.igalata.bubblepicker.physics
 
-import com.igalata.bubblepicker.BubbleSize
-import com.igalata.bubblepicker.Constant
 import com.igalata.bubblepicker.even
 import com.igalata.bubblepicker.rendering.Item
 import com.igalata.bubblepicker.sqr
@@ -17,7 +15,15 @@ object Engine {
     val selectedBodies: List<CircleBody>
         get() = bodies.filter { it.increased || it.toBeIncreased || it.isIncreasing }
     var maxSelectedCount: Int? = null
-    var radius = BubbleSize.MEDIUM
+    var radius = 50
+        set(value) {
+            field = value
+            bubbleRadius = interpolate(0.1f, 0.25f, value / 100f)
+            gravity = interpolate(20f, 80f, value / 100f)
+            standardIncreasedGravity = interpolate(500f, 800f, value / 100f)
+        }
+    private var standardIncreasedGravity = interpolate(500f, 800f, 0.5f)
+    private var bubbleRadius = 0.17f
 
     private val world = World(Vec2(0f, 0f), false)
     private val step = 0.0005f
@@ -33,16 +39,13 @@ object Engine {
     private val currentGravity: Float
         get() = if (touch) increasedGravity else gravity
     private val toBeResized = ArrayList<Item>()
-    private val verticalBorder: Float
-        get() = if (radius >= BubbleSize.LARGE) Constant.VERTICAL_BORDER.LARGE
-        else if (radius >= BubbleSize.MEDIUM) Constant.VERTICAL_BORDER.MEDIUM
-        else Constant.VERTICAL_BORDER.SMALL
 
     fun build(bodiesCount: Int, scaleX: Float, scaleY: Float): List<CircleBody> {
+        val density = interpolate(0.8f, 0.2f, radius / 100f)
         for (i in 0..bodiesCount - 1) {
             val x = if (Random().nextInt(2).even()) -2.2f else 2.2f
             val y = if (Random().nextInt(2).even()) -0.5f / scaleY else 0.5f / scaleY
-            bodies.add(CircleBody(world, Vec2(x, y), radius * scaleX, (radius * scaleX) * 1.3f))
+            bodies.add(CircleBody(world, Vec2(x, y), bubbleRadius * scaleX, (bubbleRadius * scaleX) * 1.3f, density))
         }
         this.scaleX = scaleX
         this.scaleY = scaleY
@@ -59,13 +62,16 @@ object Engine {
     }
 
     fun swipe(x: Float, y: Float) {
-        gravityCenter.set(x * 2, -y * 2)
+        if (Math.abs(gravityCenter.x) < 2) gravityCenter.x += -x
+        if (Math.abs(gravityCenter.y) < 0.5f / scaleY) gravityCenter.y += y
+        increasedGravity = standardIncreasedGravity * Math.abs(x * 13) * Math.abs(y * 13)
         touch = true
     }
 
     fun release() {
         gravityCenter.setZero()
         touch = false
+        increasedGravity = standardIncreasedGravity
     }
 
     fun clear() {
@@ -90,9 +96,7 @@ object Engine {
     private fun createBorders() {
         borders = arrayListOf(
                 Border(world, Vec2(0f, 0.5f / scaleY), Border.HORIZONTAL),
-                Border(world, Vec2(0f, -0.5f / scaleY), Border.HORIZONTAL),
-                Border(world, Vec2(verticalBorder / scaleX, 0f), Border.VERTICAL),
-                Border(world, Vec2(-verticalBorder / scaleX, 0f), Border.VERTICAL)
+                Border(world, Vec2(0f, -0.5f / scaleY), Border.HORIZONTAL)
         )
     }
 
@@ -106,5 +110,7 @@ object Engine {
             }
         }
     }
+
+    private fun interpolate(start: Float, end: Float, f: Float) = start + f * (end - start)
 
 }

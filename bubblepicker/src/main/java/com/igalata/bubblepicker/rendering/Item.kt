@@ -64,15 +64,16 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
         imageTexture = bindTexture(textureIds, index * 2 + 1, true)
     }
 
-    private fun createBitmap(withImage: Boolean): Bitmap {
+    private fun createBitmap(isSelected: Boolean): Bitmap {
         var bitmap = Bitmap.createBitmap(bitmapSize.toInt(), bitmapSize.toInt(), Bitmap.Config.ARGB_4444)
         val bitmapConfig: Bitmap.Config = bitmap.config ?: Bitmap.Config.ARGB_8888
         bitmap = bitmap.copy(bitmapConfig, true)
 
         val canvas = Canvas(bitmap)
 
-        if (withImage) drawImage(canvas)
-        drawBackground(canvas, withImage)
+        if (isSelected) drawImage(canvas)
+        drawBackground(canvas, isSelected)
+        drawIcon(canvas)
         drawText(canvas)
 
         return bitmap
@@ -88,27 +89,69 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
     }
 
     private fun drawText(canvas: Canvas) {
+        if (pickerItem.title == null || pickerItem.textColor == null) return
+
         val paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
             color = pickerItem.textColor
-            textSize = 40f
+            textSize = pickerItem.textSize
             typeface = pickerItem.typeface
         }
 
-        val textLayout = StaticLayout(pickerItem.title, paint, (bitmapSize * 0.9).toInt(),
-                Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false)
+        val maxTextHeight = if (pickerItem.icon == null) bitmapSize / 2f else bitmapSize / 2.7f
 
-        canvas.translate((bitmapSize - textLayout.width) / 2f, (bitmapSize - textLayout.height) / 2f)
+        var textLayout = placeText(paint)
+
+        while (textLayout.height > maxTextHeight) {
+            paint.textSize--
+            textLayout = placeText(paint)
+        }
+
+        if (pickerItem.icon == null) {
+            canvas.translate((bitmapSize - textLayout.width) / 2f, (bitmapSize - textLayout.height) / 2f)
+        } else if (pickerItem.iconOnTop) {
+            canvas.translate((bitmapSize - textLayout.width) / 2f, bitmapSize / 2f)
+        } else {
+            canvas.translate((bitmapSize - textLayout.width) / 2f, bitmapSize / 2 - textLayout.height)
+        }
+
         textLayout.draw(canvas)
     }
 
+    private fun placeText(paint: TextPaint): StaticLayout {
+        return StaticLayout(pickerItem.title, paint, (bitmapSize * 0.9).toInt(),
+                Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false)
+    }
+
+    private fun drawIcon(canvas: Canvas) {
+        pickerItem.icon?.let {
+            val width = it.intrinsicWidth
+            val height = it.intrinsicHeight
+
+            val left = (bitmapSize / 2 - width / 2).toInt()
+            val right = (bitmapSize / 2 + width / 2).toInt()
+
+            if (pickerItem.title == null) {
+                it.bounds = Rect(left, (bitmapSize / 2 - height / 2).toInt(), right, (bitmapSize / 2 + height / 2).toInt())
+            } else if (pickerItem.iconOnTop) {
+                it.bounds = Rect(left, (bitmapSize / 2 - height).toInt(), right, (bitmapSize / 2).toInt())
+            } else {
+                it.bounds = Rect(left, (bitmapSize / 2).toInt(), right, (bitmapSize / 2 + height).toInt())
+            }
+
+            it.draw(canvas)
+        }
+    }
+
     private fun drawImage(canvas: Canvas) {
-        val height = (pickerItem.image as BitmapDrawable).bitmap.height.toFloat()
-        val width = pickerItem.image.bitmap.width.toFloat()
-        val ratio = Math.max(height, width) / Math.min(height, width)
-        val bitmapHeight = if (height < width) bitmapSize else bitmapSize * ratio
-        val bitmapWidth = if (height < width) bitmapSize * ratio else bitmapSize
-        pickerItem.image.bounds = Rect(0, 0, bitmapWidth.toInt(), bitmapHeight.toInt())
-        pickerItem.image.draw(canvas)
+        pickerItem.backgroundImage?.let {
+            val height = (it as BitmapDrawable).bitmap.height.toFloat()
+            val width = it.bitmap.width.toFloat()
+            val ratio = Math.max(height, width) / Math.min(height, width)
+            val bitmapHeight = if (height < width) bitmapSize else bitmapSize * ratio
+            val bitmapWidth = if (height < width) bitmapSize * ratio else bitmapSize
+            it.bounds = Rect(0, 0, bitmapWidth.toInt(), bitmapHeight.toInt())
+            it.draw(canvas)
+        }
     }
 
     private fun bindTexture(textureIds: IntArray, index: Int, withImage: Boolean): Int {
