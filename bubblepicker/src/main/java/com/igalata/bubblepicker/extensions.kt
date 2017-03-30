@@ -32,7 +32,9 @@ fun FloatArray.passTextureVertices(index: Int) = put(index * 8, TEXTURE_VERTICES
 
 fun FloatArray.put(index: Int, another: FloatArray) = another.forEachIndexed { i, float -> this[index + i] = float }
 
-fun Float.convert(size: Int, scale: Float) = (2f * (this / size.toFloat()) - 1f) / scale
+fun Float.convertPoint(size: Int, scale: Float) = (2f * (this / size.toFloat()) - 1f) / scale
+
+fun Float.convertValue(size: Int, scale: Float) = (2f * (this / size.toFloat())) / scale
 
 fun Bitmap.toTexture(textureUnit: Int) {
     glActiveTexture(GL_TEXTURE0)

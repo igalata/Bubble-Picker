@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.igalata.bubblepicker.BubblePickerListener
-import com.igalata.bubblepicker.BubbleSize
 import com.igalata.bubblepicker.model.BubbleGradient
 import com.igalata.bubblepicker.model.PickerItem
 import kotlinx.android.synthetic.main.activity_demo.*
@@ -52,13 +51,13 @@ class DemoActivity : AppCompatActivity() {
                             BubbleGradient.VERTICAL),
                     typeface = mediumTypeface,
                     textColor = ContextCompat.getColor(this, android.R.color.white),
-                    image = ContextCompat.getDrawable(this, images.getResourceId(i, 0))))
+                    backgroundImage = ContextCompat.getDrawable(this, images.getResourceId(i, 0))))
         }
 
         colors.recycle()
         images.recycle()
 
-        picker.bubbleSize = BubbleSize.MEDIUM
+        picker.bubbleSize = 20
         picker.listener = object : BubblePickerListener {
             override fun onBubbleSelected(item: PickerItem) = toast("${item.title} selected")
 

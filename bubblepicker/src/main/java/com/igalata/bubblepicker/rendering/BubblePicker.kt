@@ -6,7 +6,6 @@ import android.support.annotation.ColorInt
 import android.util.AttributeSet
 import android.view.MotionEvent
 import com.igalata.bubblepicker.BubblePickerListener
-import com.igalata.bubblepicker.BubbleSize
 import com.igalata.bubblepicker.R
 import com.igalata.bubblepicker.exception.EmptyPickerException
 import com.igalata.bubblepicker.model.Color
@@ -36,9 +35,9 @@ class BubblePicker : GLSurfaceView {
         set(value) {
             renderer.listener = value
         }
-    var bubbleSize = BubbleSize.MEDIUM
+    var bubbleSize = 50
         set(value) {
-            if (value >= BubbleSize.SMALL && value <= BubbleSize.LARGE) {
+            if (value in 1..100) {
                 renderer.bubbleSize = value
             }
         }
@@ -78,7 +77,7 @@ class BubblePicker : GLSurfaceView {
             }
             MotionEvent.ACTION_MOVE -> {
                 if (isSwipe(event)) {
-                    renderer.swipe(event.x, event.y)
+                    renderer.swipe(previousX - event.x, previousY - event.y)
                     previousX = event.x
                     previousY = event.y
                 } else {
@@ -91,7 +90,7 @@ class BubblePicker : GLSurfaceView {
         return true
     }
 
-    private fun release() = postDelayed({ renderer.release() }, 1000)
+    private fun release() = postDelayed({ renderer.release() }, 0)
 
     private fun isClick(event: MotionEvent) = Math.abs(event.x - startX) < 20 && Math.abs(event.y - startY) < 20
 

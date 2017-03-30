@@ -29,7 +29,7 @@ class PickerRenderer(val glView: View) : GLSurfaceView.Renderer {
         set(value) {
             Engine.maxSelectedCount = value
         }
-    var bubbleSize = BubbleSize.MEDIUM
+    var bubbleSize = 50
         set(value) {
             Engine.radius = value
         }
@@ -139,14 +139,14 @@ class PickerRenderer(val glView: View) : GLSurfaceView.Renderer {
         glCompileShader(this)
     }
 
-    fun swipe(x: Float, y: Float) = Engine.swipe(x.convert(glView.width, scaleX),
-            y.convert(glView.height, scaleY))
+    fun swipe(x: Float, y: Float) = Engine.swipe(x.convertValue(glView.width, scaleX),
+            y.convertValue(glView.height, scaleY))
 
     fun release() = Engine.release()
 
     private fun getItem(position: Vec2) = position.let {
-        val x = it.x.convert(glView.width, scaleX)
-        val y = it.y.convert(glView.height, scaleY)
+        val x = it.x.convertPoint(glView.width, scaleX)
+        val y = it.y.convertPoint(glView.height, scaleY)
         circles.find { Math.sqrt(((x - it.x).sqr() + (y - it.y).sqr()).toDouble()) <= it.radius }
     }
 

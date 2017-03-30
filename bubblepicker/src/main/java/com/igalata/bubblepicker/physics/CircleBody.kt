@@ -1,7 +1,5 @@
 package com.igalata.bubblepicker.physics
 
-import com.igalata.bubblepicker.BubbleSize
-import com.igalata.bubblepicker.Constant
 import org.jbox2d.collision.shapes.CircleShape
 import org.jbox2d.common.Vec2
 import org.jbox2d.dynamics.*
@@ -9,7 +7,7 @@ import org.jbox2d.dynamics.*
 /**
  * Created by irinagalata on 1/26/17.
  */
-class CircleBody(val world: World, var position: Vec2, var radius: Float, var increasedRadius: Float) {
+class CircleBody(val world: World, var position: Vec2, var radius: Float, var increasedRadius: Float, var density: Float) {
 
     val decreasedRadius: Float = radius
 
@@ -50,11 +48,6 @@ class CircleBody(val world: World, var position: Vec2, var radius: Float, var in
             type = BodyType.DYNAMIC
             this.position = this@CircleBody.position
         }
-
-    private val density: Float
-        get() = if (Engine.radius >= BubbleSize.LARGE) Constant.DENSITY.LARGE
-        else if (Engine.radius >= BubbleSize.MEDIUM) Constant.DENSITY.MEDIUM
-        else Constant.DENSITY.SMALL
 
     init {
         while (true) {
