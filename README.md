@@ -161,6 +161,11 @@ For more usage examples please review the sample app
 * `textSize` parameter added
 * `BubblePicker.bubbleSize` variable now can be changed from 1 to 100
 
+## Known iOS versions of the animation
+
+* https://github.com/Ronnel/BubblePicker
+* https://github.com/efremidze/Magnetic
+
 ## License
 
 MIT License
