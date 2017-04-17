@@ -29,7 +29,7 @@ allprojects {
 Add the dependency:
 ```Groovy
 dependencies {
-	compile 'com.github.igalata:Bubble-Picker:v0.2'
+	compile 'com.github.igalata:Bubble-Picker:v0.2.1'
 }
 ```
 
@@ -153,6 +153,11 @@ To get all selected items use `picker.selectedItems` variable in Kotlin or `pick
 For more usage examples please review the sample app
 
 ## Changelog
+
+### Version: 0.2.1
+
+* `BubblePicker.centerImmediately` veriable added, so it's possible to place the bubbles 
+ in the center of the view immediately
 
 ### Version: 0.2
 
