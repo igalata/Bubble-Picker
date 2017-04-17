@@ -29,6 +29,8 @@ class CircleBody(val world: World, var position: Vec2, var radius: Float, var in
 
     var increased = false
 
+    var isVisible = true
+
     private val margin = 0.01f
     private val damping = 25f
     private val shape: CircleShape

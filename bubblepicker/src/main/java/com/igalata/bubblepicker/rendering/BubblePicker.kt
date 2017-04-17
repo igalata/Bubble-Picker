@@ -44,6 +44,12 @@ class BubblePicker : GLSurfaceView {
     val selectedItems: List<PickerItem?>
         get() = renderer.selectedItems
 
+    var centerImmediately = false
+        set(value) {
+            field = value
+            renderer.centerImmediately = value
+        }
+
     private val renderer = PickerRenderer(this)
     private var startX = 0f
     private var startY = 0f

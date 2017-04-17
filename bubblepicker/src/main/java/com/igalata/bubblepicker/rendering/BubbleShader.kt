@@ -8,6 +8,7 @@ object BubbleShader {
     const val U_MATRIX = "u_Matrix"
     const val U_BACKGROUND = "u_Background"
     const val U_TEXT = "u_Text"
+    const val U_VISIBILITY = "u_Visibility"
 
     const val A_POSITION = "a_Position"
     const val A_UV = "a_UV"
@@ -34,13 +35,15 @@ object BubbleShader {
 
         uniform vec4 u_Background;
         uniform sampler2D u_Texture;
+        uniform int u_Visibility;
 
         varying vec2 v_UV;
 
         void main()
         {
             float distance = distance(vec2(0.5, 0.5), v_UV);
-            gl_FragColor = mix(texture2D(u_Texture, v_UV), u_Background, smoothstep(0.49, 0.5, distance));
+            gl_FragColor = u_Visibility > 0 ?
+                mix(texture2D(u_Texture, v_UV), u_Background, smoothstep(0.49, 0.5, distance)) : vec4(0);
         }
     """
 
