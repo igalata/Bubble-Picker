@@ -34,6 +34,8 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
     val currentPosition: Vec2
         get() = circleBody.physicalBody.position
 
+    private var isVisible = true
+        get() = circleBody.isVisible
     private var texture: Int = 0
     private var imageTexture: Int = 0
     private val currentTexture: Int
@@ -55,6 +57,7 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
         glActiveTexture(GL_TEXTURE)
         glBindTexture(GL_TEXTURE_2D, currentTexture)
         glUniform1i(glGetUniformLocation(programId, BubbleShader.U_TEXT), 0)
+        glUniform1i(glGetUniformLocation(programId, BubbleShader.U_VISIBILITY), if (isVisible) 1 else -1)
         glUniformMatrix4fv(glGetUniformLocation(programId, U_MATRIX), 1, false, calculateMatrix(scaleX, scaleY), 0)
         glDrawArrays(GL_TRIANGLE_STRIP, index * 4, 4)
     }

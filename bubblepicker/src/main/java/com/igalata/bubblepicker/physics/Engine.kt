@@ -1,6 +1,5 @@
 package com.igalata.bubblepicker.physics
 
-import com.igalata.bubblepicker.even
 import com.igalata.bubblepicker.rendering.Item
 import com.igalata.bubblepicker.sqr
 import org.jbox2d.common.Vec2
@@ -22,6 +21,7 @@ object Engine {
             gravity = interpolate(20f, 80f, value / 100f)
             standardIncreasedGravity = interpolate(500f, 800f, value / 100f)
         }
+    var centerImmediately = false
     private var standardIncreasedGravity = interpolate(500f, 800f, 0.5f)
     private var bubbleRadius = 0.17f
 
@@ -39,12 +39,15 @@ object Engine {
     private val currentGravity: Float
         get() = if (touch) increasedGravity else gravity
     private val toBeResized = ArrayList<Item>()
+    private val startX
+        get() = if (centerImmediately) 0.5f else 2.2f
+    private var stepsCount = 0
 
     fun build(bodiesCount: Int, scaleX: Float, scaleY: Float): List<CircleBody> {
         val density = interpolate(0.8f, 0.2f, radius / 100f)
         for (i in 0..bodiesCount - 1) {
-            val x = if (Random().nextInt(2).even()) -2.2f else 2.2f
-            val y = if (Random().nextInt(2).even()) -0.5f / scaleY else 0.5f / scaleY
+            val x = if (Random().nextBoolean()) -startX else startX
+            val y = if (Random().nextBoolean()) -0.5f / scaleY else 0.5f / scaleY
             bodies.add(CircleBody(world, Vec2(x, y), bubbleRadius * scaleX, (bubbleRadius * scaleX) * 1.3f, density))
         }
         this.scaleX = scaleX
@@ -56,9 +59,13 @@ object Engine {
 
     fun move() {
         toBeResized.forEach { it.circleBody.resize(resizeStep) }
-        world.step(step, 11, 11)
+        world.step(if (centerImmediately) 0.035f else step, 11, 11)
         bodies.forEach { move(it) }
         toBeResized.removeAll(toBeResized.filter { it.circleBody.finished })
+        stepsCount++
+        if (stepsCount >= 10) {
+            centerImmediately = false
+        }
     }
 
     fun swipe(x: Float, y: Float) {
@@ -102,6 +109,7 @@ object Engine {
 
     private fun move(body: CircleBody) {
         body.physicalBody.apply {
+            body.isVisible = centerImmediately.not()
             val direction = gravityCenter.sub(position)
             val distance = direction.length()
             val gravity = if (body.increased) 1.3f * currentGravity else currentGravity

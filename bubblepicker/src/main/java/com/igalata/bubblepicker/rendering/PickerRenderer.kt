@@ -37,6 +37,11 @@ class PickerRenderer(val glView: View) : GLSurfaceView.Renderer {
     lateinit var items: ArrayList<PickerItem>
     val selectedItems: List<PickerItem?>
         get() = Engine.selectedBodies.map { circles.firstOrNull { circle -> circle.circleBody == it }?.pickerItem }
+    var centerImmediately = false
+        set(value) {
+            field = value
+            Engine.centerImmediately = value
+        }
 
     private var programId = 0
     private var verticesBuffer: FloatBuffer? = null
@@ -70,6 +75,7 @@ class PickerRenderer(val glView: View) : GLSurfaceView.Renderer {
 
     private fun initialize() {
         clear()
+        Engine.centerImmediately = centerImmediately
         Engine.build(items.size, scaleX, scaleY).forEachIndexed { index, body ->
             circles.add(Item(items[index], body))
         }
