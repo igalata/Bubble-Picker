@@ -3,6 +3,7 @@ package com.igalata.bubblepicker.rendering
 import android.opengl.GLES20
 import android.opengl.GLES20.*
 import android.opengl.GLSurfaceView
+import android.util.Log
 import android.view.View
 import com.igalata.bubblepicker.*
 import com.igalata.bubblepicker.model.Color

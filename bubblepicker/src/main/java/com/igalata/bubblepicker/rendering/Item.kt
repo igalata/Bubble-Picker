@@ -121,7 +121,7 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
     }
 
     private fun placeText(paint: TextPaint): StaticLayout {
-        return StaticLayout(pickerItem.title, paint, (bitmapSize * 0.9).toInt(),
+        return StaticLayout(pickerItem.title, paint, (bitmapSize * 300).toInt(),
                 Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false)
     }
 
