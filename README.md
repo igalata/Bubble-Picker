@@ -154,6 +154,10 @@ For more usage examples please review the sample app
 
 ## Changelog
 
+### Version: 0.2.3
+
+* Fixed black textures issue on some devices
+
 ### Version: 0.2.1
 
 * `BubblePicker.centerImmediately` veriable added, so it's possible to place the bubbles 
