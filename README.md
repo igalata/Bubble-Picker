@@ -29,7 +29,7 @@ allprojects {
 Add the dependency:
 ```Groovy
 dependencies {
-	compile 'com.github.igalata:Bubble-Picker:v0.2.2'
+	compile 'com.github.igalata:Bubble-Picker:v0.2.3'
 }
 ```
 
