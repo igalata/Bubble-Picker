@@ -40,7 +40,7 @@ data class Item(val pickerItem: PickerItem, val circleBody: CircleBody) {
     private var imageTexture: Int = 0
     private val currentTexture: Int
         get() = if (circleBody.increased || circleBody.isIncreasing) imageTexture else texture
-    private val bitmapSize = 300f
+    private val bitmapSize = 256f
     private val gradient: LinearGradient?
         get() {
             return pickerItem.gradient?.let {
