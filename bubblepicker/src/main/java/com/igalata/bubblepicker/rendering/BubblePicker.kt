@@ -8,10 +8,9 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import com.igalata.bubblepicker.BubblePickerListener
 import com.igalata.bubblepicker.R
-import com.igalata.bubblepicker.exception.EmptyPickerException
+import com.igalata.bubblepicker.adapter.BubblePickerAdapter
 import com.igalata.bubblepicker.model.Color
 import com.igalata.bubblepicker.model.PickerItem
-import java.util.*
 
 /**
  * Created by irinagalata on 1/19/17.
@@ -23,10 +22,20 @@ class BubblePicker : GLSurfaceView {
             field = value
             renderer.backgroundColor = Color(value)
         }
+    @Deprecated(level = DeprecationLevel.WARNING,
+            message = "Use BubblePickerAdapter for the view setup instead")
     var items: ArrayList<PickerItem>? = null
         set(value) {
             field = value
             renderer.items = value ?: ArrayList()
+        }
+    var adapter: BubblePickerAdapter? = null
+        set(value) {
+            field = value
+            if (value != null) {
+                renderer.items = ArrayList((0..value.totalCount - 1)
+                        .map { value.getItem(it) }.toList())
+            }
         }
     var maxSelectedCount: Int? = null
         set(value) {
@@ -66,11 +75,6 @@ class BubblePicker : GLSurfaceView {
         setRenderer(renderer)
         renderMode = RENDERMODE_CONTINUOUSLY
         attrs?.let { retrieveAttrubutes(attrs) }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (items?.isEmpty() ?: false) throw EmptyPickerException()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
