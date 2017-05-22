@@ -29,7 +29,7 @@ allprojects {
 Add the dependency:
 ```Groovy
 dependencies {
-	compile 'com.github.igalata:Bubble-Picker:v0.2.3'
+	compile 'com.github.igalata:Bubble-Picker:v0.2.4'
 }
 ```
 
@@ -91,15 +91,20 @@ val titles = resources.getStringArray(R.array.countries)
 val colors = resources.obtainTypedArray(R.array.colors)
 val images = resources.obtainTypedArray(R.array.images)
 
-picker.items = ArrayList()
+picker.adapter = object : BubblePickerAdapter {
 
-titles.forEachIndexed { i, country ->
-            picker.items?.add(PickerItem(country,
-                    gradient = BubbleGradient(colors.getColor((i * 2) % 8, 0), colors.getColor((i * 2) % 8 + 1, 0),
-                            BubbleGradient.VERTICAL),
-                    typeface = mediumTypeface,
-                    textColor = ContextCompat.getColor(this, android.R.color.white),
-                    image = ContextCompat.getDrawable(this, images.getResourceId(i, 0))))
+            override val totalCount = titles.size
+
+            override fun getItem(position: Int): PickerItem {
+                return PickerItem().apply {
+                    title = titles[position]
+                    gradient = BubbleGradient(colors.getColor((position * 2) % 8, 0),
+                            colors.getColor((position * 2) % 8 + 1, 0), BubbleGradient.VERTICAL)
+                    typeface = mediumTypeface
+                    textColor = ContextCompat.getColor(this@DemoActivity, android.R.color.white)
+                    backgroundImage = ContextCompat.getDrawable(this@DemoActivity, images.getResourceId(position, 0))
+                }
+            }
 }
 ```
 
@@ -109,13 +114,25 @@ final String[] titles = getResources().getStringArray(R.array.countries);
 final TypedArray colors = getResources().obtainTypedArray(R.array.colors);
 final TypedArray images = getResources().obtainTypedArray(R.array.images);
 
-picker.setItems(new ArrayList<PickerItem>() {{
-      for (int i = 0; i < titles.length; ++i) {
-                add(new PickerItem(titles[i], colors.getColor((i * 2) % 8, 0),
-                        ContextCompat.getColor(TestActivity.this, android.R.color.white),
-                        ContextCompat.getDrawable(TestActivity.this, images.getResourceId(i, 0))));
-      }
-}});
+picker.setAdapter(new BubblePickerAdapter() {
+            @Override
+            public int getTotalCount() {
+                return titles.length;
+            }
+
+            @NotNull
+            @Override
+            public PickerItem getItem(int position) {
+                PickerItem item = new PickerItem();
+                item.setTitle(titles[position]);
+                item.setGradient(new BubbleGradient(colors.getColor((position * 2) % 8, 0),
+                        colors.getColor((position * 2) % 8 + 1, 0), BubbleGradient.VERTICAL));
+                item.setTypeface(mediumTypeface);
+                item.setTextColor(ContextCompat.getColor(DemoActivity.this, android.R.color.white));
+                item.setBackgroundImage(ContextCompat.getDrawable(DemoActivity.this, images.getResourceId(position, 0)));
+                return item;
+            }
+});
 ```
 
 Specify the `BubblePickerListener` to get notified about events
@@ -153,6 +170,10 @@ To get all selected items use `picker.selectedItems` variable in Kotlin or `pick
 For more usage examples please review the sample app
 
 ## Changelog
+
+### Version: 0.2.4
+
+* Added a possibility to setup the `BubblePicker` using `BubblePickerAdapter`
 
 ### Version: 0.2.3
 
