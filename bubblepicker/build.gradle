@@ -30,10 +30,6 @@ dependencies {
 
     compile files('libs/jbox2d-library-2.1.2.2.jar')
     compile files('libs/slf4j-api-1.7.22.jar')
-
-    compile 'io.reactivex:rxkotlin:0.60.0'
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'io.reactivex:rxjava:1.1.6'
 }
 repositories {
     mavenCentral()
