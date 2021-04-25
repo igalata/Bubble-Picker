@@ -3,7 +3,7 @@ package com.igalata.bubblepicker.rendering
 import android.content.Context
 import android.graphics.PixelFormat
 import android.opengl.GLSurfaceView
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import android.util.AttributeSet
 import android.view.MotionEvent
 import com.igalata.bubblepicker.BubblePickerListener
