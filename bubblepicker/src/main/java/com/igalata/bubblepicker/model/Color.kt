@@ -1,7 +1,7 @@
 package com.igalata.bubblepicker.model
 
 import android.graphics.Color
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 
 /**
  * Created by irinagalata on 1/19/17.
