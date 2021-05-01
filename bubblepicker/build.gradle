@@ -28,7 +28,7 @@ dependencies {
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    compile files('libs/jbox2d-library-2.1.2.2.jar')
+    compile group: 'org.jbox2d', name: 'jbox2d-library', version: '2.1.2.3'
     compile files('libs/slf4j-api-1.7.22.jar')
 }
 repositories {
